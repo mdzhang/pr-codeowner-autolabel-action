@@ -1,21 +1,23 @@
 {
-  "name": "typescript-action",
-  "description": "GitHub Actions TypeScript template",
-  "version": "0.0.0",
-  "author": "",
+  "name": "pr-codeowner-autolabel",
+  "description": "Add labels to GitHub PRs based on the contents of CODEOWNERS file",
+  "version": "0.0.1-alpha.0",
+  "author": "@mdzhang",
   "private": true,
-  "homepage": "https://github.com/actions/typescript-action",
+  "homepage": "https://github.com/mdzhang/pr-codeowner-autolabel-action",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/actions/typescript-action.git"
+    "url": "git+https://github.com/mdzhang/pr-codeowner-autolabel-action.git"
   },
   "bugs": {
-    "url": "https://github.com/actions/typescript-action/issues"
+    "url": "https://github.com/actions/typescript-action.git/issues"
   },
   "keywords": [
     "actions",
     "node",
-    "setup"
+    "setup",
+    "codeowners",
+    "label"
   ],
   "exports": {
     ".": "./dist/index.js"
