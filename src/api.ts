@@ -83,7 +83,7 @@ export async function getCodeowners(
       repo: github.context.repo.repo,
       path: filePath
     })
-    // @ts-ignore
+    // @ts-expect-error
     fileContent = atob(result.data.content)
   } catch (error: any) {
     core.warning(`Could not find pull request #${prNumber}, skipping`)
