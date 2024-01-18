@@ -1,5 +1,11 @@
 # PR Codeowner Autolabel Action
 
+[![GitHub Super-Linter](https://github.com/mdzhang/pr-codeowner-autolabel-action/actions/workflows/linter.yml/badge.svg)](https://github.com/super-linter/super-linter)
+![CI](https://github.com/mdzhang/pr-codeowner-autolabel-action/actions/workflows/ci.yml/badge.svg)
+[![Check dist/](https://github.com/mdzhang/pr-codeowner-autolabel-action/actions/workflows/check-dist.yml/badge.svg)](https://github.com/mdzhang/pr-codeowner-autolabel-action/actions/workflows/check-dist.yml)
+[![CodeQL](https://github.com/mdzhang/pr-codeowner-autolabel-action/actions/workflows/codeql-analysis.yml/badge.svg)](https://github.com/mdzhang/pr-codeowner-autolabel-action/actions/workflows/codeql-analysis.yml)
+[![Coverage](./badges/coverage.svg)](./badges/coverage.svg)
+
 Add labels to GitHub PRs based on the contents of `.github/CODEOWNERS`
 
 ## Usage
