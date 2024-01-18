@@ -90,9 +90,10 @@ export async function getCodeowners(
       // @ts-expect-error false positive
       result.data.encoding
     ).toString()
-    core.debug(`codeowners fileContent is:\n${fileContent}`)
   } catch (error: any) {
-    core.warning(`Could not find pull request #${prNumber}, skipping`)
+    core.warning(
+      `Could not find pull request #${prNumber}, skipping (${error.message})`
+    )
     return []
   }
 
@@ -102,8 +103,30 @@ export async function getCodeowners(
     .filter(l => l.trim().length > 0)
     .filter(l => !l.startsWith('#'))
     .map(l => l.split(' '))
+    .filter(([glob, team]) => {
+      if (team === undefined) {
+        core.warning(`CODEOWNERS had glob ${glob} w/o matching team`)
+      }
 
-  core.debug(`codeowners is ${codeowners}`)
+      return team !== undefined
+    })
+    .map(([glob, team]) => {
+      // do some munging to support CODEOWNER format globs
+      let finalGlob = glob
+
+      // convert directories like foo/ to foo/**
+      if (finalGlob.endsWith('/')) {
+        finalGlob += '**'
+      } else {
+        // convert directories like foo to foo/**
+        const last = finalGlob.split('\\').pop()?.split('/').pop()
+        if (!last?.includes('.')) {
+          finalGlob += '/**'
+        }
+      }
+
+      return [finalGlob, team]
+    })
 
   if (!codeowners.length) {
     core.warning(`Pull request #${prNumber} has no codeowners`)

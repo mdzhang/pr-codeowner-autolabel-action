@@ -56,7 +56,7 @@ async function labeler() {
 
   core.debug(`labelsToOwner is ${labelsToOwner}`)
   const labelMap: Map<any, any> = flip(JSON.parse(labelsToOwner))
-  core.debug(`labelMap is ${labelMap}`)
+  core.debug(`labelMap is ${JSON.stringify(Object.fromEntries(labelMap))}`)
   const preexistingLabels = pullRequest.data.labels.map(
     (l: { name: string }) => l.name
   )
@@ -109,21 +109,17 @@ export function getMatchingCodeownerLabels(
   entries: string[][],
   labelMap: Map<string, string>
 ): Set<string> {
-  // const repoUrlPrefix = `https://github.com/${github.context.repo.owner}/${github.context.repo.repo}/blob`;
   const allLabels: Set<string> = new Set<string>()
 
   for (const changedFile of changedFiles) {
-    // const refPath = changedFile.blob_url.replace(repoUrlPrefix, '');
-    // const i = refPath.indexOf('/');
-    // const [_, path] = [refPath.slice(0,i), refPath.slice(i+1)];
-
     core.debug(`checking path ${changedFile}`)
     for (const entry of entries) {
       const [glob, team] = entry
-      core.debug(`-- checking glob ${glob}, team ${team}`)
-      if (minimatch(changedFile, glob)) {
+      if (minimatch(`/${changedFile}`, glob)) {
+        core.debug(`-- matched glob ${glob}, team ${team}`)
         const label = labelMap.get(team)
         if (label !== undefined) {
+          core.debug(`-- adding label ${label}`)
           allLabels.add(label)
         }
       }
