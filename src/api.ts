@@ -85,6 +85,7 @@ export async function getCodeowners(
     })
     // @ts-expect-error false positive
     fileContent = atob(result.data.content)
+    core.debug(`codeowners fileContent is:\n${fileContent}`)
   } catch (error: any) {
     core.warning(`Could not find pull request #${prNumber}, skipping`)
     return []
