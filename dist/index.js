@@ -32795,10 +32795,9 @@ async function getCodeowners(client, prNumber, filePath = 'CODEOWNERS') {
         result.data.content, 
         // @ts-expect-error false positive
         result.data.encoding).toString();
-        core.debug(`codeowners fileContent is:\n${fileContent}`);
     }
     catch (error) {
-        core.warning(`Could not find pull request #${prNumber}, skipping`);
+        core.warning(`Could not find pull request #${prNumber}, skipping (${error.message})`);
         return [];
     }
     // rm newlines & comments; convert to array of 2-tupes, <glob, team>
@@ -32806,8 +32805,29 @@ async function getCodeowners(client, prNumber, filePath = 'CODEOWNERS') {
         .split(/\r?\n/)
         .filter(l => l.trim().length > 0)
         .filter(l => !l.startsWith('#'))
-        .map(l => l.split(' '));
-    core.debug(`codeowners is ${codeowners}`);
+        .map(l => l.split(' '))
+        .filter(([glob, team]) => {
+        if (team === undefined) {
+            core.warning(`CODEOWNERS had glob ${glob} w/o matching team`);
+        }
+        return team !== undefined;
+    })
+        .map(([glob, team]) => {
+        // do some munging to support CODEOWNER format globs
+        let finalGlob = glob;
+        // convert directories like foo/ to foo/**
+        if (finalGlob.endsWith('/')) {
+            finalGlob += '**';
+        }
+        else {
+            // convert directories like foo to foo/**
+            const last = finalGlob.split('\\').pop()?.split('/').pop();
+            if (!last?.includes('.')) {
+                finalGlob += '/**';
+            }
+        }
+        return [finalGlob, team];
+    });
     if (!codeowners.length) {
         core.warning(`Pull request #${prNumber} has no codeowners`);
         return [];
@@ -32899,7 +32919,7 @@ async function labeler() {
     }
     core.debug(`labelsToOwner is ${labelsToOwner}`);
     const labelMap = flip(JSON.parse(labelsToOwner));
-    core.debug(`labelMap is ${labelMap}`);
+    core.debug(`labelMap is ${JSON.stringify(labelMap)}`);
     const preexistingLabels = pullRequest.data.labels.map((l) => l.name);
     const allLabels = new Set(preexistingLabels);
     const labels = getMatchingCodeownerLabels(pullRequest.changedFiles, codeowners, labelMap);
@@ -32929,19 +32949,16 @@ async function labeler() {
     core.setOutput('all-labels', labelsToAdd.join(','));
 }
 function getMatchingCodeownerLabels(changedFiles, entries, labelMap) {
-    // const repoUrlPrefix = `https://github.com/${github.context.repo.owner}/${github.context.repo.repo}/blob`;
     const allLabels = new Set();
     for (const changedFile of changedFiles) {
-        // const refPath = changedFile.blob_url.replace(repoUrlPrefix, '');
-        // const i = refPath.indexOf('/');
-        // const [_, path] = [refPath.slice(0,i), refPath.slice(i+1)];
         core.debug(`checking path ${changedFile}`);
         for (const entry of entries) {
             const [glob, team] = entry;
-            core.debug(`-- checking glob ${glob}, team ${team}`);
-            if ((0, minimatch_1.minimatch)(changedFile, glob)) {
+            if ((0, minimatch_1.minimatch)(`/${changedFile}`, glob)) {
+                core.debug(`-- matched glob ${glob}, team ${team}`);
                 const label = labelMap.get(team);
                 if (label !== undefined) {
+                    core.debug(`-- adding label ${label}`);
                     allLabels.add(label);
                 }
             }
