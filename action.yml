@@ -1,16 +1,24 @@
-name: "PR Codeowner Autolabel Action"
-description: "Add labels to GitHub PRs based on the contents of CODEOWNERS file"
-author: "@mdzhang"
+name: 'PR Codeowner Autolabel Action'
+description: 'Add labels to GitHub PRs based on the contents of CODEOWNERS file'
+author: '@mdzhang'
 
 branding:
-  icon: "heart"
-  color: "red"
+  icon: 'heart'
+  color: 'red'
 
 inputs:
-  filepath:
-    description: "Relative path to CODEOWNERS in repo"
+  repo-token:
+    description: 'The GitHub token used to manage labels'
+    required: false
+    default: ${{ github.token }}
+  file-path:
+    description: 'Relative path to CODEOWNERS in repo'
     required: false
     default: CODEOWNERS
+  labels-to-owners:
+    description:
+      'Keys are labels to add, values are potential owners in CODEOWNERS'
+    required: true
 
 runs:
   using: node20

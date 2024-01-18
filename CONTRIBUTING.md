@@ -78,12 +78,13 @@
 
 1. Create a pull request and get feedback on your action
 1. Merge the pull request into the `main` branch
-1. The [`test-action`](./github/workflows/ci.yml) check in CI will do a basic check on the action
+1. The [`test-action`](./github/workflows/ci.yml) check in CI will do a basic
+   check on the action
 
 ## Publishing a new release
 
-This project includes a helper script (`./script/release`) designed to streamline the process of
-tagging and pushing new releases for GitHub Actions.
+This project includes a helper script (`./script/release`) designed to
+streamline the process of tagging and pushing new releases for GitHub Actions.
 
 It performs the following steps:
 
@@ -101,4 +102,4 @@ It performs the following steps:
 ## Resources
 
 - [Octokit JS docs](https://octokit.github.io/rest.js/v20)
-- [Github REST API docs](https://docs.github.com/en/rest/repos/contents?apiVersion=2022-11-28)
+- [GitHub REST API docs](https://docs.github.com/en/rest/repos/contents?apiVersion=2022-11-28)

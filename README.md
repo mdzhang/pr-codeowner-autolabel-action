@@ -1,5 +1,7 @@
 # PR Codeowner Autolabel Action
 
+⚠️: Work in progress!
+
 Add labels to GitHub PRs based on the contents of `.github/CODEOWNERS`
 
 ## Usage
@@ -15,8 +17,11 @@ steps:
     uses: mdzhang/pr-codeowner-autolabel
     with:
       # default is ./CODEOWNERS
-      filepath: ./.github/CODEOWNERS
-
+      file-path: ./.github/CODEOWNERS
+      labels-to-owners: |
+        {
+          "frontend": "@myteam/@frontend-guild"
+        }
 ```
 
 ## Contributing
