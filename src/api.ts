@@ -82,10 +82,14 @@ export async function getCodeowners(
       owner: github.context.repo.owner,
       repo: github.context.repo.repo,
       path: filePath,
-      ref: github.context.sha,
+      ref: github.context.sha
     })
-    // @ts-expect-error false positive
-    fileContent = Buffer.from(result.data.content, result.data.encoding).toString()
+    fileContent = Buffer.from(
+      // @ts-expect-error false positive
+      result.data.content,
+      // @ts-expect-error false positive
+      result.data.encoding
+    ).toString()
     core.debug(`codeowners fileContent is:\n${fileContent}`)
   } catch (error: any) {
     core.warning(`Could not find pull request #${prNumber}, skipping`)

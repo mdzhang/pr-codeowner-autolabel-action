@@ -32787,10 +32787,15 @@ async function getCodeowners(client, prNumber, filePath = 'CODEOWNERS') {
         const result = await client.rest.repos.getContent({
             owner: github.context.repo.owner,
             repo: github.context.repo.repo,
-            path: filePath
+            path: filePath,
+            ref: github.context.sha
         });
+        fileContent = Buffer.from(
         // @ts-expect-error false positive
-        fileContent = atob(result.data.content);
+        result.data.content, 
+        // @ts-expect-error false positive
+        result.data.encoding).toString();
+        core.debug(`codeowners fileContent is:\n${fileContent}`);
     }
     catch (error) {
         core.warning(`Could not find pull request #${prNumber}, skipping`);
@@ -32802,6 +32807,7 @@ async function getCodeowners(client, prNumber, filePath = 'CODEOWNERS') {
         .filter(l => l.trim().length > 0)
         .filter(l => !l.startsWith('#'))
         .map(l => l.split(' '));
+    core.debug(`codeowners is #${codeowners}`);
     if (!codeowners.length) {
         core.warning(`Pull request #${prNumber} has no codeowners`);
         return [];
@@ -32891,7 +32897,9 @@ async function labeler() {
     if (codeowners.length === 0) {
         return;
     }
+    core.debug(`labelsToOwner is #${labelsToOwner}`);
     const labelMap = flip(JSON.parse(labelsToOwner));
+    core.debug(`labelMap is #${labelMap}`);
     const preexistingLabels = pullRequest.data.labels.map((l) => l.name);
     const allLabels = new Set(preexistingLabels);
     const labels = getMatchingCodeownerLabels(pullRequest.changedFiles, codeowners, labelMap);
@@ -32930,6 +32938,7 @@ function getMatchingCodeownerLabels(changedFiles, entries, labelMap) {
         core.debug(`checking path ${changedFile}`);
         for (const entry of entries) {
             const [glob, team] = entry;
+            core.debug(`-- checking glob ${glob}, team ${team}`);
             if ((0, minimatch_1.minimatch)(changedFile, glob)) {
                 const label = labelMap.get(team);
                 if (label !== undefined) {
