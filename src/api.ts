@@ -101,6 +101,13 @@ export async function getCodeowners(
     .filter(l => l.trim().length > 0)
     .filter(l => !l.startsWith('#'))
     .map(l => l.split(' '))
+    .filter((glob, team) => {
+      if (team === undefined) {
+        code.warning(`CODEOWNERS had glob ${glob} w/o matching team`)
+      }
+
+      return team !== undefined
+    });
 
   if (!codeowners.length) {
     core.warning(`Pull request #${prNumber} has no codeowners`)
