@@ -32807,7 +32807,7 @@ async function getCodeowners(client, prNumber, filePath = 'CODEOWNERS') {
         .filter(l => l.trim().length > 0)
         .filter(l => !l.startsWith('#'))
         .map(l => l.split(' '));
-    core.debug(`codeowners is #${codeowners}`);
+    core.debug(`codeowners is ${codeowners}`);
     if (!codeowners.length) {
         core.warning(`Pull request #${prNumber} has no codeowners`);
         return [];
@@ -32882,7 +32882,7 @@ const getInputs = () => ({
     prNumber: github.context.payload.pull_request?.number
 });
 exports.getInputs = getInputs;
-const flip = (data) => new Map(Object.fromEntries(Object.entries(data).map(([key, value]) => [value, key])));
+const flip = (data) => new Map(Object.entries(data).map(([key, value]) => [value, key]));
 async function labeler() {
     const { token, filePath, prNumber, labelsToOwner } = (0, exports.getInputs)();
     const client = github.getOctokit(token, {}, pluginRetry.retry);
@@ -32897,9 +32897,9 @@ async function labeler() {
     if (codeowners.length === 0) {
         return;
     }
-    core.debug(`labelsToOwner is #${labelsToOwner}`);
+    core.debug(`labelsToOwner is ${labelsToOwner}`);
     const labelMap = flip(JSON.parse(labelsToOwner));
-    core.debug(`labelMap is #${labelMap}`);
+    core.debug(`labelMap is ${labelMap}`);
     const preexistingLabels = pullRequest.data.labels.map((l) => l.name);
     const allLabels = new Set(preexistingLabels);
     const labels = getMatchingCodeownerLabels(pullRequest.changedFiles, codeowners, labelMap);

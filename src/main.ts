@@ -33,9 +33,7 @@ export const getInputs = () => ({
 })
 
 const flip = (data: Map<any, any>) =>
-  new Map(
-    Object.entries(data).map(([key, value]) => [value, key])
-  )
+  new Map(Object.entries(data).map(([key, value]) => [value, key]))
 
 async function labeler() {
   const { token, filePath, prNumber, labelsToOwner } = getInputs()
