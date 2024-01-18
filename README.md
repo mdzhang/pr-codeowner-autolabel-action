@@ -6,7 +6,7 @@
 [![CodeQL](https://github.com/mdzhang/pr-codeowner-autolabel-action/actions/workflows/codeql-analysis.yml/badge.svg)](https://github.com/mdzhang/pr-codeowner-autolabel-action/actions/workflows/codeql-analysis.yml)
 [![Coverage](./badges/coverage.svg)](./badges/coverage.svg)
 
-Add labels to GitHub PRs based on the contents of `.github/CODEOWNERS`
+Add labels to GitHub PRs based on the contents of [`CODEOWNERS`](https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-code-owners)
 
 ## Usage
 
@@ -24,8 +24,9 @@ jobs:
       id: pr-codeowner-autolabel
       uses: mdzhang/pr-codeowner-autolabel
       with:
-        # default is ./CODEOWNERS
-        file-path: ./.github/CODEOWNERS
+        # default is CODEOWNERS
+        file-path: .github/CODEOWNERS
+        repo-token: ${{ secrets.GITHUB_TOKEN }}
         labels-to-owners: |
           {
             "frontend": "@myteam/@frontend-guild"
