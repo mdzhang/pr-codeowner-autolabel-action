@@ -34,7 +34,7 @@ export const getInputs = () => ({
 
 const flip = (data: Map<any, any>) =>
   new Map(
-    Object.fromEntries(Object.entries(data).map(([key, value]) => [value, key]))
+    Object.entries(data).map(([key, value]) => [value, key])
   )
 
 async function labeler() {
@@ -56,9 +56,9 @@ async function labeler() {
     return
   }
 
-  core.debug(`labelsToOwner is #${labelsToOwner}`)
+  core.debug(`labelsToOwner is ${labelsToOwner}`)
   const labelMap: Map<any, any> = flip(JSON.parse(labelsToOwner))
-  core.debug(`labelMap is #${labelMap}`)
+  core.debug(`labelMap is ${labelMap}`)
   const preexistingLabels = pullRequest.data.labels.map(
     (l: { name: string }) => l.name
   )

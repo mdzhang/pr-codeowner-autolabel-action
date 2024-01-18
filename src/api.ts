@@ -103,7 +103,7 @@ export async function getCodeowners(
     .filter(l => !l.startsWith('#'))
     .map(l => l.split(' '))
 
-  core.debug(`codeowners is #${codeowners}`)
+  core.debug(`codeowners is ${codeowners}`)
 
   if (!codeowners.length) {
     core.warning(`Pull request #${prNumber} has no codeowners`)
