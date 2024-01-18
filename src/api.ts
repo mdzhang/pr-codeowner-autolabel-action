@@ -83,6 +83,7 @@ export async function getCodeowners(
       repo: github.context.repo.repo,
       path: filePath
     })
+    core.debug(`codeowners response is:\n${result.data}`)
     // @ts-expect-error false positive
     fileContent = atob(result.data.content)
     core.debug(`codeowners fileContent is:\n${fileContent}`)
