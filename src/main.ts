@@ -33,7 +33,9 @@ export const getInputs = () => ({
 })
 
 const flip = (data: Map<any, any>) =>
-  Object.fromEntries(Object.entries(data).map(([key, value]) => [value, key]))
+  new Map(
+    Object.fromEntries(Object.entries(data).map(([key, value]) => [value, key]))
+  )
 
 async function labeler() {
   const { token, filePath, prNumber, labelsToOwner } = getInputs()
@@ -54,7 +56,7 @@ async function labeler() {
     return
   }
 
-  const labelMap = flip(JSON.parse(labelsToOwner))
+  const labelMap: Map<any, any> = flip(JSON.parse(labelsToOwner))
   const preexistingLabels = pullRequest.data.labels.map(
     (l: { name: string }) => l.name
   )

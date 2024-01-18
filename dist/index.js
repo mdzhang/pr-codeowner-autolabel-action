@@ -32876,7 +32876,7 @@ const getInputs = () => ({
     prNumber: github.context.payload.pull_request?.number
 });
 exports.getInputs = getInputs;
-const flip = (data) => Object.fromEntries(Object.entries(data).map(([key, value]) => [value, key]));
+const flip = (data) => new Map(Object.fromEntries(Object.entries(data).map(([key, value]) => [value, key])));
 async function labeler() {
     const { token, filePath, prNumber, labelsToOwner } = (0, exports.getInputs)();
     const client = github.getOctokit(token, {}, pluginRetry.retry);
