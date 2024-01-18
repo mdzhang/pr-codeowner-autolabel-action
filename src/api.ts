@@ -81,11 +81,11 @@ export async function getCodeowners(
     const result = await client.rest.repos.getContent({
       owner: github.context.repo.owner,
       repo: github.context.repo.repo,
-      path: filePath
+      path: filePath,
+      ref: github.context.sha,
     })
-    core.debug(`codeowners response is:\n${result.data}`)
     // @ts-expect-error false positive
-    fileContent = atob(result.data.content)
+    fileContent = Buffer.from(result.data.content, result.data.encoding).toString()
     core.debug(`codeowners fileContent is:\n${fileContent}`)
   } catch (error: any) {
     core.warning(`Could not find pull request #${prNumber}, skipping`)
