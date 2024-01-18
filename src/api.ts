@@ -90,9 +90,8 @@ export async function getCodeowners(
       // @ts-expect-error false positive
       result.data.encoding
     ).toString()
-    core.debug(`codeowners fileContent is:\n${fileContent}`)
   } catch (error: any) {
-    core.warning(`Could not find pull request #${prNumber}, skipping`)
+    core.warning(`Could not find pull request #${prNumber}, skipping (${error.message})`)
     return []
   }
 
@@ -102,8 +101,6 @@ export async function getCodeowners(
     .filter(l => l.trim().length > 0)
     .filter(l => !l.startsWith('#'))
     .map(l => l.split(' '))
-
-  core.debug(`codeowners is ${codeowners}`)
 
   if (!codeowners.length) {
     core.warning(`Pull request #${prNumber} has no codeowners`)
