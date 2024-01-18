@@ -76,14 +76,29 @@ export async function getPullRequest(
 export async function getCodeowners(
   client: ClientType,
   prNumber: number,
-  filePath: string
+  filePath: string = 'CODEOWNERS'
 ) {
   core.debug(`fetching codeowners for pr #${prNumber}`);
-  const codeowners: string[] = await getCodeowners(client, prNumber);
+  let fileContent: any;
+
+  try {
+    const result = client.rest.repos.getContent({
+      owner: github.context.repo.owner,
+      repo: github.context.repo.repo,
+      path: filePath,
+    });
+    fileContent = atob(result.data.content);
+  } catch (error: any) {
+    core.warning(`Could not find pull request #${prNumber}, skipping`);
+    return;
+  }
+
+  // rm newlines & comments; convert to array of 2-tupes, <glob, team>
+  const codeowners: string[] = fileContent.split(/\r?\n/).filter(l => l.trim().length > 0).filter(l => !l.startsWith('#')).split(' ')
   if (!codeowners.length) {
     core.warning(`Pull request #${prNumber} has no codeowners`);
     return;
   }
 
-  return cdoeowners;
+  return codeowners;
 }

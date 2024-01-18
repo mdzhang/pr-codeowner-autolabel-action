@@ -97,3 +97,8 @@ It performs the following steps:
 1. **Pushing the new tag to the remote:** Finally, the script pushes the new tag
    to the remote repository. From here, you will need to create a new release in
    GitHub and users can easily reference the new tag in their workflows.
+
+## Resources
+
+- [Octokit JS docs](https://octokit.github.io/rest.js/v20)
+- [Github REST API docs](https://docs.github.com/en/rest/repos/contents?apiVersion=2022-11-28)
