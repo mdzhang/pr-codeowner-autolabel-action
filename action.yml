@@ -2,10 +2,6 @@ name: 'PR Codeowner Autolabel Action'
 description: 'Add labels to GitHub PRs based on the contents of CODEOWNERS file'
 author: '@mdzhang'
 
-branding:
-  icon: 'heart'
-  color: 'red'
-
 inputs:
   repo-token:
     description: 'The GitHub token used to manage labels'
