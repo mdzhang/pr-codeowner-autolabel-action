@@ -56,7 +56,9 @@ async function labeler() {
     return
   }
 
+  core.debug(`labelsToOwner is #${labelsToOwner}`)
   const labelMap: Map<any, any> = flip(JSON.parse(labelsToOwner))
+  core.debug(`labelMap is #${labelMap}`)
   const preexistingLabels = pullRequest.data.labels.map(
     (l: { name: string }) => l.name
   )
@@ -120,6 +122,7 @@ export function getMatchingCodeownerLabels(
     core.debug(`checking path ${changedFile}`)
     for (const entry of entries) {
       const [glob, team] = entry
+      core.debug(`-- checking glob ${glob}, team ${team}`)
       if (minimatch(changedFile, glob)) {
         const label = labelMap.get(team)
         if (label !== undefined) {
