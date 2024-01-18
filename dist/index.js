@@ -32789,9 +32789,8 @@ async function getCodeowners(client, prNumber, filePath = 'CODEOWNERS') {
             repo: github.context.repo.repo,
             path: filePath
         });
-        console.log(result.data);
-        // fileContent = atob(result.data.content);
-        fileContent = '';
+        // @ts-expect-error false positive
+        fileContent = atob(result.data.content);
     }
     catch (error) {
         core.warning(`Could not find pull request #${prNumber}, skipping`);
