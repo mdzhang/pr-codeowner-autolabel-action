@@ -115,7 +115,7 @@ export function getMatchingCodeownerLabels(
     core.debug(`checking path ${changedFile}`)
     for (const entry of entries) {
       const [glob, team] = entry
-      if (minimatch(changedFile, glob)) {
+      if (minimatch(`/${changedFile}`, glob)) {
         core.debug(`-- matched glob ${glob}, team ${team}`)
         const label = labelMap.get(team)
         if (label !== undefined) {
