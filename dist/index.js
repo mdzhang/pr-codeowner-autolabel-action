@@ -32919,7 +32919,7 @@ async function labeler() {
     }
     core.debug(`labelsToOwner is ${labelsToOwner}`);
     const labelMap = flip(JSON.parse(labelsToOwner));
-    core.debug(`labelMap is ${JSON.stringify(labelMap)}`);
+    core.debug(`labelMap is ${JSON.stringify(Object.fromEntries(labelMap))}`);
     const preexistingLabels = pullRequest.data.labels.map((l) => l.name);
     const allLabels = new Set(preexistingLabels);
     const labels = getMatchingCodeownerLabels(pullRequest.changedFiles, codeowners, labelMap);

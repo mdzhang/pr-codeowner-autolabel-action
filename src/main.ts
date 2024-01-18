@@ -56,7 +56,7 @@ async function labeler() {
 
   core.debug(`labelsToOwner is ${labelsToOwner}`)
   const labelMap: Map<any, any> = flip(JSON.parse(labelsToOwner))
-  core.debug(`labelMap is ${JSON.stringify(labelMap)}`)
+  core.debug(`labelMap is ${JSON.stringify(Object.fromEntries(labelMap))}`)
   const preexistingLabels = pullRequest.data.labels.map(
     (l: { name: string }) => l.name
   )
