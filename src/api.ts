@@ -19,7 +19,6 @@ export const setLabels = async (
   });
 };
 
-// getCodeownerEntries
 export const getChangedFiles = async (
   client: ClientType,
   prNumber: number
@@ -78,7 +77,7 @@ export async function getCodeowners(
   prNumber: number,
   filePath: string = 'CODEOWNERS'
 ) {
-  core.debug(`fetching codeowners for pr #${prNumber}`);
+  core.debug(`fetching codeowners for pr #${prNumber} from path ${filePath}`);
   let fileContent: any;
 
   try {
@@ -94,7 +93,11 @@ export async function getCodeowners(
   }
 
   // rm newlines & comments; convert to array of 2-tupes, <glob, team>
-  const codeowners: string[] = fileContent.split(/\r?\n/).filter(l => l.trim().length > 0).filter(l => !l.startsWith('#')).split(' ')
+  const codeowners: string[] = fileContent
+    .split(/\r?\n/)
+    .filter(l => l.trim().length > 0)
+    .filter(l => !l.startsWith('#')).split(' ');
+
   if (!codeowners.length) {
     core.warning(`Pull request #${prNumber} has no codeowners`);
     return;

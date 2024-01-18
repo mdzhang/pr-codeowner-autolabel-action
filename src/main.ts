@@ -6,6 +6,7 @@ import * as core from '@actions/core';
 import * as github from '@actions/github';
 import * as pluginRetry from '@octokit/plugin-retry';
 import isEqual from 'lodash.isequal';
+import { minimatch } from 'minimatch'
 import * as api from './api';
 import { ClientType } from './types';
 
@@ -86,14 +87,26 @@ export function getMatchingCodeownerLabels(
   changedFiles: string[],
   entries: string[],
   labelMap: Map<string, string>
-): string[] {
-  // TODO
-  for (const config of matchConfigs) {
-    core.debug(` checking config ${JSON.stringify(config)}`);
-    if (!checkMatch(changedFiles, config, dot)) {
-      return false;
+): Set<string> {
+  const repoUrlPrefix = `https://github.com/${github.context.repo.owner}/${github.context.repo.repo}/blob`;
+  const allLabels: Set<string> = new Set<string>();
+
+  for (const changedFile of changedFiles) {
+    const refPath = split(changedFile.blob_url.replace(repoUrlPrefix, ''));
+    const i = refPath.indexOf('/');
+    const [_, path] = [refPath.slice(0,i), refPath.slice(i+1)];
+
+    core.debug(`checking path ${path}`);
+    for (const entry of entries) {
+      const [glob, team] = entry
+      if minimatch(path, glob) {
+        const label = labelMap.get(team);
+        if (label) {}
+          allLabels.add(label);
+        }
+      }
     }
   }
 
-  return true;
+  return allLabels;
 }
