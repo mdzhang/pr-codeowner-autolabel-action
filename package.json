@@ -1,21 +1,23 @@
 {
-  "name": "typescript-action",
-  "description": "GitHub Actions TypeScript template",
-  "version": "0.0.0",
-  "author": "",
+  "name": "pr-codeowner-autolabel",
+  "description": "Add labels to GitHub PRs based on the contents of CODEOWNERS file",
+  "version": "0.0.1-alpha.0",
+  "author": "@mdzhang",
   "private": true,
-  "homepage": "https://github.com/actions/typescript-action",
+  "homepage": "https://github.com/mdzhang/pr-codeowner-autolabel-action",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/actions/typescript-action.git"
+    "url": "git+https://github.com/mdzhang/pr-codeowner-autolabel-action.git"
   },
   "bugs": {
-    "url": "https://github.com/actions/typescript-action/issues"
+    "url": "https://github.com/mdzhang/pr-codeowner-autolabel-action.git/issues"
   },
   "keywords": [
     "actions",
     "node",
-    "setup"
+    "setup",
+    "codeowners",
+    "label"
   ],
   "exports": {
     ".": "./dist/index.js"
@@ -66,10 +68,15 @@
     ]
   },
   "dependencies": {
-    "@actions/core": "^1.10.1"
+    "@actions/core": "^1.10.1",
+    "@actions/github": "^6.0.0",
+    "@octokit/plugin-retry": "^6.0.1",
+    "lodash.isequal": "^4.5.0",
+    "minimatch": "^9.0.3"
   },
   "devDependencies": {
     "@types/jest": "^29.5.11",
+    "@types/lodash.isequal": "^4.5.8",
     "@types/node": "^20.11.0",
     "@typescript-eslint/eslint-plugin": "^6.18.1",
     "@typescript-eslint/parser": "^6.18.1",

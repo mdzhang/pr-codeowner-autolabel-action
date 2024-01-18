@@ -1,23 +1,24 @@
-name: 'The name of your action here'
-description: 'Provide a description here'
-author: 'Your name or organization here'
+name: 'PR Codeowner Autolabel Action'
+description: 'Add labels to GitHub PRs based on the contents of CODEOWNERS file'
+author: '@mdzhang'
 
-# Add your action's branding here. This will appear on the GitHub Marketplace.
 branding:
   icon: 'heart'
   color: 'red'
 
-# Define your inputs here.
 inputs:
-  milliseconds:
-    description: 'Your input description here'
+  repo-token:
+    description: 'The GitHub token used to manage labels'
+    required: false
+    default: ${{ github.token }}
+  file-path:
+    description: 'Relative path to CODEOWNERS in repo'
+    required: false
+    default: CODEOWNERS
+  labels-to-owners:
+    description:
+      'Keys are labels to add, values are potential owners in CODEOWNERS'
     required: true
-    default: '1000'
-
-# Define your outputs here.
-outputs:
-  time:
-    description: 'Your output description here'
 
 runs:
   using: node20
