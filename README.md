@@ -33,6 +33,12 @@ jobs:
           }
 ```
 
+Note that dependabot PRs will get labeled by default as well! If not desired add the following to the workflow:
+
+```yaml
+if: ${{ github.actor != 'dependabot[bot]' }}
+```
+
 ## Permissions
 
 In order to add labels to pull requests, this action requires write permissions on the pull-request.
