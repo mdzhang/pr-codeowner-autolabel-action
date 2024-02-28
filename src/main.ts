@@ -113,17 +113,24 @@ export function getMatchingCodeownerLabels(
 
   for (const changedFile of changedFiles) {
     core.debug(`checking path ${changedFile}`)
+
+    let longestMatch = 0;
+    let bestLabel: string;
+
     for (const entry of entries) {
       const [glob, team] = entry
       if (minimatch(`/${changedFile}`, glob)) {
         core.debug(`-- matched glob ${glob}, team ${team}`)
         const label = labelMap.get(team)
-        if (label !== undefined) {
-          core.debug(`-- adding label ${label}`)
-          allLabels.add(label)
+        if (label !== undefined && glob.length > longestMatch) {
+          bestLabel = label
+          longestMatch = glob.length
         }
       }
     }
+
+    core.debug(`-- adding label ${bestLabel}`)
+    allLabels.add(bestLabel)
   }
 
   return allLabels
