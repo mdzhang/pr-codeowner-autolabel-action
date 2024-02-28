@@ -129,8 +129,10 @@ export function getMatchingCodeownerLabels(
       }
     }
 
-    core.debug(`-- adding label ${bestLabel}`)
-    allLabels.add(bestLabel)
+    if (bestLabel !== undefined) {
+      core.debug(`-- adding label ${bestLabel}`)
+      allLabels.add(bestLabel)
+    }
   }
 
   return allLabels
