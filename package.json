@@ -1,6 +1,7 @@
 {
   "name": "pr-codeowner-autolabel",
   "description": "Add labels to GitHub PRs based on the contents of CODEOWNERS file",
+  "type": "module",
   "version": "0.0.2",
   "author": "@mdzhang",
   "private": true,
