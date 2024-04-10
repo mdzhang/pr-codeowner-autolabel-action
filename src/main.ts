@@ -4,7 +4,7 @@
 
 import * as core from '@actions/core'
 import * as github from '@actions/github'
-import * as pluginRetry from '@octokit/plugin-retry'
+import { retry } from '@octokit/plugin-retry'
 import isEqual from 'lodash.isequal'
 import { minimatch } from 'minimatch'
 import * as api from './api'
@@ -38,7 +38,7 @@ const flip = (data: Map<any, any>) =>
 async function labeler() {
   const { token, filePath, prNumber, labelsToOwner } = getInputs()
 
-  const client: ClientType = github.getOctokit(token, {}, pluginRetry.retry)
+  const client: ClientType = github.getOctokit(token, {}, retry)
 
   if (!prNumber) {
     return

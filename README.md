@@ -22,7 +22,7 @@ jobs:
 
     - name: PR Codeowner Autolabel
       id: pr-codeowner-autolabel
-      uses: mdzhang/pr-codeowner-autolabel
+      uses: mdzhang/pr-codeowner-autolabel-action
       with:
         # default is CODEOWNERS
         file-path: .github/CODEOWNERS
