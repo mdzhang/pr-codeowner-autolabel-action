@@ -32806,13 +32806,15 @@ async function getCodeowners(client, prNumber, filePath = 'CODEOWNERS') {
         .filter(l => l.trim().length > 0)
         .filter(l => !l.startsWith('#'))
         .map(l => l.split(' '))
-        .filter(([glob, team]) => {
-        if (team === undefined) {
+        .filter(([glob, ...teams]) => {
+        if (teams.length === 0 ||
+            (teams.length === 1 && teams[0] === undefined)) {
             core.warning(`CODEOWNERS had glob ${glob} w/o matching team`);
+            return false;
         }
-        return team !== undefined;
+        return true;
     })
-        .map(([glob, team]) => {
+        .map(([glob, ...teams]) => {
         // do some munging to support CODEOWNER format globs
         let finalGlob = glob;
         // convert directories like foo/ to foo/**
@@ -32826,8 +32828,9 @@ async function getCodeowners(client, prNumber, filePath = 'CODEOWNERS') {
                 finalGlob += '/**';
             }
         }
-        return [finalGlob, team];
-    });
+        return teams.map(team => [finalGlob, team]);
+    })
+        .flat(1);
     if (!codeowners.length) {
         core.warning(`Pull request #${prNumber} has no codeowners`);
         return [];
