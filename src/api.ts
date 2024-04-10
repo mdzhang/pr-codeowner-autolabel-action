@@ -104,12 +104,15 @@ export async function getCodeowners(
     .filter(l => !l.startsWith('#'))
     .map(l => l.split(' '))
     .filter(([glob, ...teams]) => {
-      if (teams.length === 0 || (teams.length === 1 && teams[0] === undefined)) {
+      if (
+        teams.length === 0 ||
+        (teams.length === 1 && teams[0] === undefined)
+      ) {
         core.warning(`CODEOWNERS had glob ${glob} w/o matching team`)
-        return false;
+        return false
       }
 
-      return true;
+      return true
     })
     .map(([glob, ...teams]) => {
       // do some munging to support CODEOWNER format globs
@@ -128,7 +131,7 @@ export async function getCodeowners(
 
       return teams.map(team => [finalGlob, team])
     })
-    .flat(1);
+    .flat(1)
 
   if (!codeowners.length) {
     core.warning(`Pull request #${prNumber} has no codeowners`)
