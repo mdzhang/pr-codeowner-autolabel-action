@@ -124,7 +124,8 @@ export async function getCodeowners(
       } else {
         // convert directories like foo to foo/**
         const last = finalGlob.split('\\').pop()?.split('/').pop()
-        if (!last?.indexOf('.') > 0) {
+        const dotIdx = last?.indexOf('.')
+        if (dotIdx !== -1 && !!dotIdx) {
           finalGlob += '/**'
         }
       }
