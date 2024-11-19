@@ -32826,7 +32826,7 @@ async function getCodeowners(client, prNumber, filePath = 'CODEOWNERS') {
             const last = finalGlob.split('\\').pop()?.split('/').pop();
             if (last) {
                 const parts = last.split('.');
-                if (parts.length == 1) {
+                if (parts.length === 1) {
                     finalGlob += '/**';
                 }
                 // assume it's a dot-prefixed dir name like '.github/'
