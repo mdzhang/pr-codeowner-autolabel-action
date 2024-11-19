@@ -127,7 +127,7 @@ export async function getCodeowners(
         if (last) {
           const parts = last.split('.')
 
-          if (parts.length == 1) {
+          if (parts.length === 1) {
             finalGlob += '/**'
           }
 
